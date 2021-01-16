@@ -2,10 +2,15 @@ import { Db, MongoClient } from "mongodb";
 import { NextApiRequest, NextApiResponse } from "next";
 import nextConnect from "next-connect";
 
-const client = new MongoClient(process.env.MONGODB_URI, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true
-});
+const client = new MongoClient(
+  process.env.NODE_ENV === "production"
+    ? process.env.MONGODB_URI
+    : process.env.MONGODB_LOCAL,
+  {
+    useNewUrlParser: true,
+    useUnifiedTopology: true
+  }
+);
 
 export interface IReq extends NextApiRequest {
   dbClient: MongoClient;
@@ -13,7 +18,8 @@ export interface IReq extends NextApiRequest {
 }
 
 async function database(req: IReq, _res: NextApiResponse, next: any) {
-  if (!client.isConnected()) await client.connect();
+  if (!client.isConnected())
+    await client.connect().then(() => console.log("Connected to DB!"));
   req.dbClient = client;
   req.db = client.db("MCT");
   return next();

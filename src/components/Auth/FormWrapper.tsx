@@ -4,10 +4,10 @@ import Link from "../Link";
 import useAuthStyles from "./useAuthStyles";
 
 interface IFormWrapperProps {
-  href: "login" | "/";
+  href?: "login";
 }
 
-const FormWrapper: React.FC<IFormWrapperProps> = ({ children, href }) => {
+const FormWrapper: React.FC<IFormWrapperProps> = ({ children, href = "" }) => {
   const classes = useAuthStyles();
 
   return (
@@ -18,7 +18,7 @@ const FormWrapper: React.FC<IFormWrapperProps> = ({ children, href }) => {
       </Typography>
       <span>
         {href === "login" ? "Already a member?" : "Don’t have an account yet?"}{" "}
-        <Link href={href}>{href === "login" ? "Login" : "Register"}</Link>
+        <Link href={`/${href}`}>{href === "login" ? "Login" : "Register"}</Link>
       </span>
     </Paper>
   );
