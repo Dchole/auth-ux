@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Field, Form, Formik, FormikHelpers } from "formik";
 import { TextField } from "formik-material-ui";
+import useSWR from "swr";
 import Button from "@material-ui/core/Button";
 import IconButton from "@material-ui/core/IconButton";
 import InputAdornment from "@material-ui/core/InputAdornment";
@@ -14,6 +15,7 @@ import {
   TValues,
   validationSchema
 } from "@/lib/formik-options/auth-options";
+import fetcher from "requests/fetcher";
 
 interface IFormProps {
   form: "Login" | "Register";
@@ -22,6 +24,11 @@ interface IFormProps {
 
 const AuthForm: React.FC<IFormProps> = ({ children, form, handleSubmit }) => {
   const [showPassword, setShowPassword] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const { data, error, mutate, isValidating } = useSWR(
+    "/api/userExists",
+    fetcher
+  );
 
   const handleToggleVisibility = () => setShowPassword(!showPassword);
 
@@ -52,11 +59,11 @@ const AuthForm: React.FC<IFormProps> = ({ children, form, handleSubmit }) => {
                   <MailIcon color="action" />
                 </InputAdornment>
               ),
-              endAdornment: (
+              endAdornment: isValidating ? (
                 <InputAdornment position="end">
                   <CircularProgress size={20} color="inherit" />
                 </InputAdornment>
-              )
+              ) : null
             }}
           />
           <Field

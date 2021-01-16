@@ -27,6 +27,19 @@ const useAuthStyles = makeStyles(theme =>
       "& .MuiButton-root": {
         margin: theme.spacing(2, 0, 2)
       }
+    },
+    services: {
+      display: "flex",
+      justifyContent: "center",
+      alignItems: "center",
+      listStyle: "none",
+      padding: 0,
+      margin: 0,
+
+      "& .MuiIconButton-root": {
+        border: "1px solid #828282",
+        margin: theme.spacing(2, 1, 3)
+      }
     }
   })
 );
