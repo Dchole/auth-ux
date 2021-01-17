@@ -15,12 +15,12 @@ export const validateEmail = async (
 ) => {
   await mutate();
 
-  let error: string;
+  let error: Partial<TValues> = {};
 
   if (userExists) {
-    if (form === "Register") error = "Email already taken";
+    if (form === "Register") error.email = "Email already taken";
   } else {
-    if (form === "Login") error = "Email does not exist";
+    if (form === "Login") error.email = "Email does not exist";
   }
 
   return error;

@@ -36,6 +36,7 @@ const AuthForm: React.FC<IFormProps> = ({ children, form, handleSubmit }) => {
   return (
     <Formik
       initialValues={initialValues}
+      validate={() => validateEmail(form, data?.userExists, mutate)}
       validationSchema={validationSchema}
       onSubmit={handleSubmit}
     >
@@ -46,7 +47,6 @@ const AuthForm: React.FC<IFormProps> = ({ children, form, handleSubmit }) => {
             component={TextField}
             error={touched.email && Boolean(errors.email)}
             helperText={touched.email && errors.email}
-            validate={() => validateEmail(form, data?.userExists, mutate)}
             id="email"
             name="email"
             type="email"

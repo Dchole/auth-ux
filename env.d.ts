@@ -1,6 +1,7 @@
 declare namespace NodeJS {
   interface ProcessEnv {
-    CRYPTO_SECRET: string;
+    JWT_SECRET: string;
+    REFRESH_SECRET: string;
     MONGODB_URI: string;
     MONGODB_LOCAL: string;
   }
