@@ -1,7 +1,8 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Field, Form, Formik, FormikHelpers } from "formik";
 import { TextField } from "formik-material-ui";
 import useSWR from "swr";
+import validator from "email-validator";
 import Button from "@material-ui/core/Button";
 import IconButton from "@material-ui/core/IconButton";
 import InputAdornment from "@material-ui/core/InputAdornment";
@@ -24,9 +25,10 @@ interface IFormProps {
 
 const AuthForm: React.FC<IFormProps> = ({ children, form, handleSubmit }) => {
   const [showPassword, setShowPassword] = useState(false);
-  const [loading, setLoading] = useState(false);
-  const { data, error, mutate, isValidating } = useSWR(
-    "/api/userExists",
+  const [email, setEmail] = useState("");
+  // const [loading, setLoading] = useState(false);
+  const { data, revalidate, isValidating } = useSWR(
+    `/api/user-exists?email=${email}`,
     fetcher
   );
 
@@ -38,7 +40,7 @@ const AuthForm: React.FC<IFormProps> = ({ children, form, handleSubmit }) => {
       validationSchema={validationSchema}
       onSubmit={handleSubmit}
     >
-      {({ isSubmitting, errors, touched }) => (
+      {({ isSubmitting, errors, touched, handleChange, setFieldError }) => (
         <Form aria-labelledby="heading">
           {children}
           <Field
@@ -51,6 +53,10 @@ const AuthForm: React.FC<IFormProps> = ({ children, form, handleSubmit }) => {
             label="Email"
             variant="outlined"
             autoComplete="email"
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+              handleChange(e);
+              setEmail(e.target.value)
+            }}
             autoFocus
             fullWidth
             InputProps={{
