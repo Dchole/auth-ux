@@ -1,8 +1,7 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Field, Form, Formik, FormikHelpers } from "formik";
 import { TextField } from "formik-material-ui";
 import useSWR from "swr";
-import validator from "email-validator";
 import Button from "@material-ui/core/Button";
 import IconButton from "@material-ui/core/IconButton";
 import InputAdornment from "@material-ui/core/InputAdornment";
@@ -14,6 +13,7 @@ import VisibilityOff from "@material-ui/icons/VisibilityOff";
 import {
   initialValues,
   TValues,
+  validateEmail,
   validationSchema
 } from "@/lib/formik-options/auth-options";
 import fetcher from "requests/fetcher";
@@ -26,8 +26,7 @@ interface IFormProps {
 const AuthForm: React.FC<IFormProps> = ({ children, form, handleSubmit }) => {
   const [showPassword, setShowPassword] = useState(false);
   const [email, setEmail] = useState("");
-  // const [loading, setLoading] = useState(false);
-  const { data, revalidate, isValidating } = useSWR(
+  const { data, mutate, isValidating } = useSWR(
     `/api/user-exists?email=${email}`,
     fetcher
   );
@@ -40,13 +39,14 @@ const AuthForm: React.FC<IFormProps> = ({ children, form, handleSubmit }) => {
       validationSchema={validationSchema}
       onSubmit={handleSubmit}
     >
-      {({ isSubmitting, errors, touched, handleChange, setFieldError }) => (
+      {({ isSubmitting, values, errors, touched, handleChange }) => (
         <Form aria-labelledby="heading">
           {children}
           <Field
             component={TextField}
             error={touched.email && Boolean(errors.email)}
             helperText={touched.email && errors.email}
+            validate={() => validateEmail(form, data?.userExists, mutate)}
             id="email"
             name="email"
             type="email"
@@ -55,7 +55,7 @@ const AuthForm: React.FC<IFormProps> = ({ children, form, handleSubmit }) => {
             autoComplete="email"
             onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
               handleChange(e);
-              setEmail(e.target.value)
+              setEmail(e.target.value);
             }}
             autoFocus
             fullWidth
@@ -65,11 +65,12 @@ const AuthForm: React.FC<IFormProps> = ({ children, form, handleSubmit }) => {
                   <MailIcon color="action" />
                 </InputAdornment>
               ),
-              endAdornment: isValidating ? (
-                <InputAdornment position="end">
-                  <CircularProgress size={20} color="inherit" />
-                </InputAdornment>
-              ) : null
+              endAdornment:
+                values.email && isValidating ? (
+                  <InputAdornment position="end">
+                    <CircularProgress size={20} color="inherit" />
+                  </InputAdornment>
+                ) : null
             }}
           />
           <Field
