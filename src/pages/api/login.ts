@@ -35,8 +35,8 @@ handler.post(
           .status(400)
           .json({ message: "Password is incorrect", key: "password" });
 
-      const accessToken = createAccessToken({ uid: user._id });
-      const refreshToken = createRefreshToken({ uid: user._id });
+      const accessToken = createAccessToken(user._id);
+      const refreshToken = createRefreshToken(user._id);
 
       if (req.body.remember) {
         setTokenCookie(res, refreshToken);
@@ -45,7 +45,7 @@ handler.post(
         res.json({ accessToken, refreshToken });
       }
     } catch (error) {
-      res.status(500).send("Something went wrong");
+      res.status(500).end("Something went wrong");
     }
   }
 );

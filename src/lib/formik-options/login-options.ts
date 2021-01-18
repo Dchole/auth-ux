@@ -9,9 +9,8 @@ export const initialValues = {
 export type TValues = typeof initialValues;
 
 export const handleSubmit = (
-  values: TValues,
-  { setSubmitting }: FormikHelpers<TValues>
-) => async (redirect: (path: string) => void) => {
+  redirect: (path: string) => Promise<boolean>
+) => async (values: TValues, { setSubmitting }: FormikHelpers<TValues>) => {
   try {
     await fetch("/api/login", {
       method: "POST",

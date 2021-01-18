@@ -30,7 +30,7 @@ handler.post(async (req: IReq, res: NextApiResponse<IError | string>) => {
 
     res.send("Registration successful");
   } catch (error) {
-    res.status(500).send("Something went wrong");
+    res.status(500).end("Something went wrong");
   }
 });
 

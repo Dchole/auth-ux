@@ -1,11 +1,7 @@
 import { sign } from "jsonwebtoken";
 
-export interface IPayload {
-  uid: string;
-}
+export const createAccessToken = (id: string) =>
+  sign({ id }, process.env.JWT_ACCESS_SECRET, { expiresIn: "10m" });
 
-export const createAccessToken = (payload: IPayload) =>
-  sign(payload, process.env.JWT_SECRET, { expiresIn: "10m" });
-
-export const createRefreshToken = (payload: IPayload) =>
-  sign(payload, process.env.REFRESH_SECRET, { expiresIn: "7d" });
+export const createRefreshToken = (id: string) =>
+  sign({ id }, process.env.JWT_REFRESH_SECRET, { expiresIn: "7d" });
