@@ -26,6 +26,10 @@ const useAuthStyles = makeStyles(theme =>
 
       "& .MuiButton-root": {
         margin: theme.spacing(2, 0, 2)
+      },
+
+      "& .MuiFormControlLabel-root": {
+        marginTop: theme.spacing(1)
       }
     },
     services: {

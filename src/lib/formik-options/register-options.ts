@@ -1,9 +1,27 @@
 import { FormikHelpers } from "formik";
-import { TValues } from "./auth-options";
 
-export const handleSubmit = (
+export const initialValues = {
+  email: "",
+  password: ""
+};
+
+export type TValues = typeof initialValues;
+
+export const handleSubmit = async (
   values: TValues,
-  actions: FormikHelpers<TValues>
+  { setSubmitting }: FormikHelpers<TValues>
 ) => {
-  console.log(values, actions);
+  try {
+    await fetch("/api/register", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(values)
+    });
+  } catch (error) {
+    console.log(error);
+  } finally {
+    setSubmitting(false);
+  }
 };

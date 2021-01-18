@@ -1,8 +1,9 @@
 import { useState } from "react";
 import { Field, Form, Formik, FormikHelpers } from "formik";
-import { TextField } from "formik-material-ui";
+import { Checkbox, TextField } from "formik-material-ui";
 import useSWR from "swr";
 import Button from "@material-ui/core/Button";
+import FormControlLabel from "@material-ui/core/FormControlLabel";
 import IconButton from "@material-ui/core/IconButton";
 import InputAdornment from "@material-ui/core/InputAdornment";
 import CircularProgress from "@material-ui/core/CircularProgress";
@@ -12,15 +13,16 @@ import Visibility from "@material-ui/icons/Visibility";
 import VisibilityOff from "@material-ui/icons/VisibilityOff";
 import {
   initialValues,
-  TValues,
   validateEmail,
   validationSchema
 } from "@/lib/formik-options/auth-options";
 import fetcher from "requests/fetcher";
+// import { initialValues as loginValues, TValues as TLoginValues } from "@/lib/formik-options/login-options";
+// import { initialValues as registerValues, TValues as TLoginValues } from "@/lib/formik-options/register-options";
 
 interface IFormProps {
   form: "Login" | "Register";
-  handleSubmit: (values: TValues, actions: FormikHelpers<TValues>) => void;
+  handleSubmit: (values: any, actions: FormikHelpers<any>) => void;
 }
 
 const AuthForm: React.FC<IFormProps> = ({ children, form, handleSubmit }) => {
@@ -103,6 +105,18 @@ const AuthForm: React.FC<IFormProps> = ({ children, form, handleSubmit }) => {
                 </InputAdornment>
               )
             }}
+          />
+          <FormControlLabel
+            control={
+              <Field
+                id="remember"
+                name="remember"
+                type="checkbox"
+                color="primary"
+                component={Checkbox}
+              />
+            }
+            label="Remember me"
           />
           <Button
             type="submit"

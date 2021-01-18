@@ -3,7 +3,8 @@ import * as Yup from "yup";
 
 export const initialValues = {
   email: "",
-  password: ""
+  password: "",
+  remember: false
 };
 
 export type TValues = typeof initialValues;
@@ -28,5 +29,6 @@ export const validateEmail = async (
 
 export const validationSchema = Yup.object().shape({
   email: Yup.string().email().required().label("Email"),
-  password: Yup.string().min(8).required().label("Password")
+  password: Yup.string().min(8).required().label("Password"),
+  remember: Yup.boolean()
 });
