@@ -1,10 +1,7 @@
 import { NextApiRequest, NextApiResponse } from "next";
-import nextConnect from "next-connect";
 import { getTokenCookie, setTokenCookie } from "@/utils/auth-cookie";
 import { verify } from "jsonwebtoken";
 import { createAccessToken, createRefreshToken } from "@/utils/createToken";
-
-const handler = nextConnect();
 
 interface IData {
   accessToken: string;

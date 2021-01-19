@@ -25,7 +25,11 @@ handler.post(async (req: IReq, res: NextApiResponse<IError | string>) => {
 
     await req.db.collection("users").insertOne({
       email: req.body.email,
-      password: hashedPassword
+      password: hashedPassword,
+      name: "",
+      bio: "",
+      phone: "",
+      photo: ""
     });
 
     res.send("Registration successful");
