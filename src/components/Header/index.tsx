@@ -1,5 +1,7 @@
 import dynamic from "next/dynamic";
 import { useState } from "react";
+import { useTheme } from "@material-ui/core/styles";
+import useMediaQuery from "@material-ui/core/useMediaQuery";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import Avatar from "@material-ui/core/Avatar";
@@ -14,6 +16,8 @@ const Menu = dynamic(() => import("@/components/Menu"));
 const Header = () => {
   const classes = useHeaderStyles();
   const [anchorEl, setAnchorEl] = useState<null | HTMLButtonElement>(null);
+  const { breakpoints } = useTheme();
+  const mobile = useMediaQuery(breakpoints.down("xs"));
 
   const handleOpen = (event: React.MouseEvent<HTMLButtonElement>) =>
     setAnchorEl(event.currentTarget);
@@ -22,7 +26,11 @@ const Header = () => {
 
   return (
     <>
-      <AppBar elevation={0} color="transparent">
+      <AppBar
+        elevation={0}
+        position={mobile ? "static" : "fixed"}
+        color="transparent"
+      >
         <Toolbar className={classes.toolbar}>
           <div></div>
           <Grid

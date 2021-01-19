@@ -3,6 +3,7 @@ import nextConnect from "next-connect";
 import { genSalt, hash } from "bcryptjs";
 import database, { IReq } from "@/middleware/database";
 import validation, { IError } from "@/middleware/validation";
+import { ObjectID } from "mongodb";
 
 const handler = nextConnect();
 
@@ -24,6 +25,7 @@ handler.post(async (req: IReq, res: NextApiResponse<IError | string>) => {
     const hashedPassword = await hash(req.body.password, salt);
 
     await req.db.collection("users").insertOne({
+      _id: new ObjectID(),
       email: req.body.email,
       password: hashedPassword,
       name: "",

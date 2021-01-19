@@ -1,3 +1,5 @@
+import { useTheme } from "@material-ui/core/styles";
+import useMediaQuery from "@material-ui/core/useMediaQuery";
 import Paper from "@material-ui/core/Paper";
 import Toolbar from "@material-ui/core/Toolbar";
 import Box from "@material-ui/core/Box";
@@ -10,20 +12,15 @@ import TableCell from "@material-ui/core/TableCell";
 import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
 import Avatar from "@material-ui/core/Avatar";
-import useInfoStyles from "./useInfoStyles";
+import Link from "@/components/Link";
 import useUser from "@/hooks/useUser";
-
-const userData = {
-  photo: undefined,
-  name: "Xanthe Neal",
-  bio: "I am a software developer and a big fan of devchallenges...",
-  phone: "908249274292",
-  email: "xanthe.neal@gmail.com",
-  password: "************"
-};
+import rearrangeUserKeys from "@/utils/rearrange-user-keys";
+import useInfoStyles from "./useInfoStyles";
 
 const ProfileInfo = () => {
   const classes = useInfoStyles();
+  const theme = useTheme();
+  const mobile = useMediaQuery(theme.breakpoints.down("xs"));
   const { user, fetchingUser } = useUser();
 
   return (
@@ -37,7 +34,16 @@ const ProfileInfo = () => {
             Some info may be visible to other people
           </Typography>
         </div>
-        <Button variant="outlined">Edit</Button>
+        {/* @ts-ignore */}
+        <Button
+          component={Link}
+          href="/edit"
+          variant="outlined"
+          role={undefined}
+          naked
+        >
+          Edit
+        </Button>
       </Toolbar>
       {fetchingUser ? (
         <Box
@@ -50,27 +56,41 @@ const ProfileInfo = () => {
           <CircularProgress />
         </Box>
       ) : (
-        <TableContainer>
+        <TableContainer className={classes.container}>
           <Table aria-labelledby="table-heading">
             <TableBody>
-              {Object.entries(user).map(([key, value], index) => (
-                <TableRow key={key}>
-                  <TableCell
-                    component="th"
-                    scope="row"
-                    classes={{ root: classes.cell }}
-                  >
-                    {key.toUpperCase()}
-                  </TableCell>
-                  <TableCell>
-                    {!index ? (
-                      <Avatar variant="rounded" className={classes.avatar} />
-                    ) : (
-                      value || "Empty"
-                    )}
-                  </TableCell>
-                </TableRow>
-              ))}
+              {Object.entries(rearrangeUserKeys(user)).map(
+                ([key, value], index) => (
+                  <TableRow key={key}>
+                    <TableCell
+                      component="th"
+                      scope="row"
+                      classes={{ root: classes.cell }}
+                    >
+                      {key.toUpperCase()}
+                    </TableCell>
+                    <TableCell align={mobile ? "right" : "left"}>
+                      {!index ? (
+                        <Avatar variant="rounded" className={classes.avatar} />
+                      ) : (
+                        value || "Empty"
+                      )}
+                    </TableCell>
+                  </TableRow>
+                )
+              )}
+              <TableRow>
+                <TableCell
+                  component="th"
+                  scope="row"
+                  classes={{ root: classes.cell }}
+                >
+                  PASSWORD
+                </TableCell>
+                <TableCell align={mobile ? "right" : "left"}>
+                  ************
+                </TableCell>
+              </TableRow>
             </TableBody>
           </Table>
         </TableContainer>

@@ -43,6 +43,7 @@ const LoginForm = () => {
             label="Email"
             variant="outlined"
             autoComplete="email"
+            aria-required="true"
             autoFocus
             fullWidth
             InputProps={{
@@ -63,6 +64,7 @@ const LoginForm = () => {
             label="Password"
             variant="outlined"
             autoComplete="current-password"
+            aria-required="true"
             fullWidth
             InputProps={{
               startAdornment: (

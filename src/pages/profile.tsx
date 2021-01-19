@@ -1,5 +1,5 @@
 import Head from "next/head";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import Typography from "@material-ui/core/Typography";
 import Header from "@/components/Header";
@@ -10,6 +10,9 @@ import useUser from "@/hooks/useUser";
 const Profile = () => {
   const { replace } = useRouter();
   const { renewingToken, isAuthenticated } = useUser();
+  const [editMode, setEditMode] = useState(false);
+
+  const handleToggle = () => setEditMode(!editMode);
 
   useEffect(() => {
     if (!renewingToken && !isAuthenticated) {

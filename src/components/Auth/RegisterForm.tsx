@@ -44,6 +44,7 @@ const RegisterForm = () => {
             label="Email"
             variant="outlined"
             autoComplete="email"
+            aria-required="true"
             autoFocus
             fullWidth
             InputProps={{
@@ -64,6 +65,7 @@ const RegisterForm = () => {
             label="Password"
             variant="outlined"
             autoComplete="new-password"
+            aria-required="true"
             fullWidth
             InputProps={{
               startAdornment: (

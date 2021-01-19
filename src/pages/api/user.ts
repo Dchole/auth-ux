@@ -1,7 +1,7 @@
 import { NextApiResponse } from "next";
 import nextConnect from "next-connect";
 import database, { IReq } from "@/middleware/database";
-import { ObjectId } from "mongodb";
+import { ObjectID } from "mongodb";
 import getUserID from "@/utils/get-userID";
 
 const handler = nextConnect();
@@ -17,7 +17,10 @@ handler.get(async (req: IReq, res: NextApiResponse) => {
 
     const user = await req.db
       .collection("users")
-      .findOne({ _id: new ObjectId(userID) });
+      .findOne(
+        { _id: new ObjectID(userID) },
+        { projection: { password: 0, _id: 0 } }
+      );
 
     if (!user) return res.status(400).end("User not found");
 

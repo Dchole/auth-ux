@@ -13,11 +13,16 @@ const useInfoStyles = makeStyles(theme =>
       alignItems: "center",
       padding: theme.spacing(3, 4)
     },
+    container: {
+      borderTop: `1px solid ${theme.palette.grey[300]}`
+    },
     cell: {
       padding: theme.spacing(2, 4)
     },
     avatar: {
-      borderRadius: 4
+      borderRadius: 4,
+      width: 50,
+      height: 50
     }
   })
 );
