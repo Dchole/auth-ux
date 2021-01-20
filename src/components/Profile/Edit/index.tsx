@@ -14,7 +14,10 @@ import Button from "@material-ui/core/Button";
 import LockIcon from "@material-ui/icons/Lock";
 import CameraIcon from "@material-ui/icons/CameraAlt";
 import { useFormik } from "formik";
-import { handleSubmit as onSubmit } from "@/lib/formik-options/profile-options";
+import {
+  handleSubmit as onSubmit,
+  validationSchema
+} from "@/lib/formik-options/profile-options";
 import rearrangeUserKeys from "@/utils/rearrange-user-keys";
 import useEditStyles from "./useEditStyles";
 
@@ -48,7 +51,11 @@ const EditProfile: React.FC<IEditProfileProps> = ({ user }) => {
     errors,
     values,
     touched
-  } = useFormik({ initialValues: rearrangeUserKeys(user), onSubmit });
+  } = useFormik({
+    initialValues: rearrangeUserKeys(user),
+    validationSchema,
+    onSubmit
+  });
 
   return (
     <Paper variant="outlined" className={classes.root}>
@@ -88,7 +95,7 @@ const EditProfile: React.FC<IEditProfileProps> = ({ user }) => {
           .slice(1)
           .map((key, index) => (
             <FormControl key={key} className={classes.formControl}>
-              <label htmlFor="name">{capitalize(key)}</label>
+              <label htmlFor={key}>{capitalize(key)}</label>
               <OutlinedInput
                 id={key}
                 name={key}
@@ -116,7 +123,7 @@ const EditProfile: React.FC<IEditProfileProps> = ({ user }) => {
                 fullWidth
               />
               {touched[key] && errors[key] && (
-                <FormHelperText id={`${key}-error-message`}>
+                <FormHelperText error id={`${key}-error-message`}>
                   {errors[key]}
                 </FormHelperText>
               )}

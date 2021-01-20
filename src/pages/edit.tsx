@@ -33,7 +33,7 @@ const Edit = () => {
       <style jsx>{`
         #back-button {
           width: 100%;
-          margin-top: 120px;
+          margin-top: 220px;
         }
       `}</style>
     </>

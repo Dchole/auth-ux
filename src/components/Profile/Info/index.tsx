@@ -69,7 +69,14 @@ const ProfileInfo = () => {
                     >
                       {key.toUpperCase()}
                     </TableCell>
-                    <TableCell align={mobile ? "right" : "left"}>
+                    <TableCell
+                      align={mobile ? "right" : "left"}
+                      classes={
+                        index === 0
+                          ? { alignRight: classes.alignRight }
+                          : undefined
+                      }
+                    >
                       {!index ? (
                         <Avatar variant="rounded" className={classes.avatar} />
                       ) : (

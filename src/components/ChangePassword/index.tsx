@@ -6,28 +6,24 @@ import Button from "@material-ui/core/Button";
 import { Field, Form, Formik, FormikHelpers } from "formik";
 import { TextField } from "formik-material-ui";
 import useChangePasswordStyles from "./useChangePasswordStyles";
+import changePassword from "@/requests/change-password";
+import {
+  handleSubmit,
+  initialValues,
+  TValues,
+  validationSchema
+} from "@/lib/formik-options/password-options";
 
 interface IChangePasswordProps {
   open: boolean;
   handleClose: () => void;
 }
 
-const initialValues = {
-  current: "",
-  new: ""
-};
-
-type TValues = typeof initialValues;
-
 const ChangePassword: React.FC<IChangePasswordProps> = ({
   open,
   handleClose
 }) => {
   const classes = useChangePasswordStyles();
-
-  const handleSubmit = (values: TValues, actions: FormikHelpers<TValues>) => {
-    console.log(values);
-  };
 
   return (
     <Dialog
@@ -37,7 +33,11 @@ const ChangePassword: React.FC<IChangePasswordProps> = ({
       classes={{ paper: classes.paper }}
       className={classes.root}
     >
-      <Formik initialValues={initialValues} onSubmit={handleSubmit}>
+      <Formik
+        initialValues={initialValues}
+        validationSchema={validationSchema}
+        onSubmit={handleSubmit(handleClose)}
+      >
         {({ isSubmitting }) => (
           <Form>
             <DialogTitle id="change-password-title">
@@ -48,6 +48,7 @@ const ChangePassword: React.FC<IChangePasswordProps> = ({
                 component={TextField}
                 id="current-password"
                 name="current"
+                type="password"
                 variant="outlined"
                 label="Current Password"
                 autoComplete="current-password"
@@ -58,6 +59,7 @@ const ChangePassword: React.FC<IChangePasswordProps> = ({
                 component={TextField}
                 id="new-password"
                 name="new"
+                type="password"
                 variant="outlined"
                 label="New Password"
                 autoComplete="new-password"

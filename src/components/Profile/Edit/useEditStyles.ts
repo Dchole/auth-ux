@@ -4,7 +4,7 @@ const useEditStyles = makeStyles(theme =>
   createStyles({
     root: {
       padding: theme.spacing(2),
-      margin: theme.spacing(2),
+      margin: theme.spacing(1, 2, 2),
       width: "100%",
 
       [theme.breakpoints.up("sm")]: {
@@ -12,7 +12,7 @@ const useEditStyles = makeStyles(theme =>
       }
     },
     header: {
-      marginBottom: theme.spacing(2)
+      marginBottom: theme.spacing(3)
     },
     avatar: {
       display: "flex",
@@ -45,7 +45,14 @@ const useEditStyles = makeStyles(theme =>
           transition: theme.transitions.create(["background-color", "color"], {
             easing: theme.transitions.easing.easeOut,
             duration: theme.transitions.duration.shortest
-          })
+          }),
+          backgroundColor: "#575757aa",
+          color: "#888",
+
+          [theme.breakpoints.up("sm")]: {
+            color: "white",
+            backgroundColor: "#BDBDBD"
+          }
         },
 
         "& button": {
@@ -53,11 +60,15 @@ const useEditStyles = makeStyles(theme =>
           top: "50%",
           left: "50%",
           transform: "translate(-50%, -50%)",
-          opacity: 0,
+          opacity: 1,
           transition: theme.transitions.create("opacity", {
             easing: theme.transitions.easing.easeOut,
             duration: theme.transitions.duration.short
           }),
+
+          [theme.breakpoints.up("sm")]: {
+            opacity: 0
+          },
 
           "& svg": {
             color: "white"
@@ -74,10 +85,14 @@ const useEditStyles = makeStyles(theme =>
       }
     },
     formControl: {
-      width: "60%"
+      margin: theme.spacing(0, 0, 2),
+
+      [theme.breakpoints.up("sm")]: {
+        width: "60%"
+      }
     },
     input: {
-      margin: theme.spacing(0.5, 0, 2)
+      margin: theme.spacing(0.5, 0, 0)
     },
     passwordControl: {
       position: "relative",
@@ -85,8 +100,9 @@ const useEditStyles = makeStyles(theme =>
       "& #password-button": {
         position: "absolute",
         width: "100%",
-        height: "56%",
-        top: "26%",
+        height: "67%",
+        top: "21%",
+        marginTop: 8,
         borderRadius: theme.shape.borderRadius,
         backgroundColor: "#aaa1",
 

@@ -15,9 +15,9 @@ const Menu = dynamic(() => import("@/components/Menu"));
 
 const Header = () => {
   const classes = useHeaderStyles();
-  const [anchorEl, setAnchorEl] = useState<null | HTMLButtonElement>(null);
   const { breakpoints } = useTheme();
   const mobile = useMediaQuery(breakpoints.down("xs"));
+  const [anchorEl, setAnchorEl] = useState<null | HTMLButtonElement>(null);
 
   const handleOpen = (event: React.MouseEvent<HTMLButtonElement>) =>
     setAnchorEl(event.currentTarget);

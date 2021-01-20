@@ -19,6 +19,11 @@ const useInfoStyles = makeStyles(theme =>
     cell: {
       padding: theme.spacing(2, 4)
     },
+    alignRight: {
+      display: "flex",
+      justifyContent: "flex-end",
+      flexDirection: "initial"
+    },
     avatar: {
       borderRadius: 4,
       width: 50,

@@ -25,7 +25,9 @@ handler.put(async (req: IReq, res: NextApiResponse) => {
     const validPassword = await compare(req.body.current, user.password);
 
     if (!validPassword) {
-      return res.json({ message: "Password Incorrect!", key: "current" });
+      return res
+        .status(400)
+        .json({ message: "Password Incorrect!", key: "current" });
     }
 
     const salt = await genSalt(10);

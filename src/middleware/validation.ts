@@ -14,10 +14,10 @@ async function validation(
 ) {
   const schema = "remember" in req.body ? loginSchema : registerSchema;
 
-  const validation = schema.options({ abortEarly: false }).validate(req.body);
+  const { error } = schema.options({ abortEarly: false }).validate(req.body);
 
-  if (validation.error) {
-    const errors = validation.error.details.map(({ message, context }) => ({
+  if (error) {
+    const errors = error.details.map(({ message, context }) => ({
       message,
       key: context.key
     }));
