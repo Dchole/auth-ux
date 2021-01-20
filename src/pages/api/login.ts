@@ -28,7 +28,7 @@ handler.post(
           .status(400)
           .json({ message: "Email does not exist", key: "email" });
 
-      const validPassword = compare(req.body.password, user.password);
+      const validPassword = await compare(req.body.password, user.password);
 
       if (!validPassword)
         return res

@@ -4,9 +4,10 @@ const useMenuStyles = makeStyles(theme =>
   createStyles({
     root: {
       "& .MuiList-root": {
-        padding: theme.spacing(2, 1.5),
+        padding: theme.spacing(2, 0),
 
         "& .MuiMenuItem-root": {
+          margin: theme.spacing(0, 1.5),
           borderRadius: theme.shape.borderRadius,
 
           "&:last-child": {
@@ -18,11 +19,13 @@ const useMenuStyles = makeStyles(theme =>
           }
         }
       },
-
       "& .MuiLink-root": {
         display: "flex",
         alignItems: "center"
       }
+    },
+    divider: {
+      margin: theme.spacing(1.5, 0)
     }
   })
 );

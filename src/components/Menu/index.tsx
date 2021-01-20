@@ -1,5 +1,6 @@
 import Menu from "@material-ui/core/Menu";
 import MenuItem from "@material-ui/core/MenuItem";
+import Divider from "@material-ui/core/Divider";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
 import PersonIcon from "@material-ui/icons/Person";
@@ -50,6 +51,7 @@ const Options: React.FC<IOptionsProps> = ({ anchorEl, handleClose }) => {
           <ListItemText primary="Edit Account" />
         </Link>
       </MenuItem>
+      <Divider component="li" className={classes.divider} />
       <MenuItem onClick={logout}>
         <ListItemIcon>
           <ExitToAppIcon color="secondary" />
