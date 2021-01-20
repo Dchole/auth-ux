@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
 import useSWR from "swr";
-import fetcher from "@/requests/fetcher";
+import getUser from "@/requests/get-user";
 import getNewToken from "@/requests/get-new-token";
 
 const useUser = () => {
-  const { data: user, error, mutate } = useSWR("/api/user", fetcher);
+  const { data: user, error, mutate } = useSWR("/api/user", getUser);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [renewingToken, setRenewingToken] = useState(true);
 

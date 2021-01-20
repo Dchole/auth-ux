@@ -22,6 +22,7 @@ import rearrangeUserKeys from "@/utils/rearrange-user-keys";
 import useEditStyles from "./useEditStyles";
 
 const ChangePassword = dynamic(() => import("@/components/ChangePassword"));
+const Toast = dynamic(() => import("@/components/Toast"));
 
 interface IUser {
   photo: string;
@@ -39,9 +40,17 @@ const EditProfile: React.FC<IEditProfileProps> = ({ user }) => {
   const inputRef = useRef<HTMLInputElement | null>(null);
   const classes = useEditStyles();
   const [open, setOpen] = useState(false);
+  const [error, setError] = useState("");
+  const [success, setSuccess] = useState("");
 
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
+
+  const handleError = (error: string) => setError(error);
+  const clearError = () => setError("");
+
+  const handleSuccess = (message: string) => setSuccess(success);
+  const clearSuccess = () => setSuccess("");
 
   const {
     handleBlur,
@@ -54,7 +63,7 @@ const EditProfile: React.FC<IEditProfileProps> = ({ user }) => {
   } = useFormik({
     initialValues: rearrangeUserKeys(user),
     validationSchema,
-    onSubmit
+    onSubmit: onSubmit(handleError, handleSuccess)
   });
 
   return (
@@ -72,7 +81,7 @@ const EditProfile: React.FC<IEditProfileProps> = ({ user }) => {
           <Avatar variant="rounded" />
           <IconButton
             id="upload-profile-button"
-            aria-label="upload new profile photo"
+            aria-labelledby="change-photo-label"
             onClick={() => inputRef.current.click()}
           >
             <CameraIcon />
@@ -83,10 +92,14 @@ const EditProfile: React.FC<IEditProfileProps> = ({ user }) => {
             accept="image/*"
             name="photo"
             type="file"
-            aria-labelledby="upload-profile-button"
+            aria-labelledby="change-photo-label"
           />
         </div>
-        <Typography component="span" color="textSecondary">
+        <Typography
+          id="change-photo-label"
+          component="span"
+          color="textSecondary"
+        >
           CHANGE PHOTO
         </Typography>
       </div>
@@ -159,6 +172,18 @@ const EditProfile: React.FC<IEditProfileProps> = ({ user }) => {
         </div>
       </form>
       <ChangePassword open={open} handleClose={handleClose} />
+      <Toast
+        open={Boolean(error)}
+        message={error}
+        severity="error"
+        handleClose={clearError}
+      />
+      <Toast
+        open={Boolean(success)}
+        message={success}
+        severity="success"
+        handleClose={clearSuccess}
+      />
     </Paper>
   );
 };

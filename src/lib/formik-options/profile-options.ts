@@ -1,5 +1,7 @@
 import * as Yup from "yup";
 import { FormikHelpers } from "formik";
+import updateUser from "@/requests/update-user";
+import { mutate } from "swr";
 
 export const initialValues = {
   photo: "",
@@ -9,7 +11,7 @@ export const initialValues = {
   email: ""
 };
 
-type TValues = typeof initialValues;
+export type TValues = typeof initialValues;
 
 export const validationSchema = Yup.object({
   photo: Yup.string().label("Photo"),
@@ -20,8 +22,18 @@ export const validationSchema = Yup.object({
 });
 
 export const handleSubmit = (
-  values: TValues,
-  actions: FormikHelpers<TValues>
-) => {
-  console.log(values, actions);
+  handleError: (error: string) => void,
+  handleSuccess: (message: string) => void
+) => async (values: TValues, { setSubmitting }: FormikHelpers<TValues>) => {
+  const res = await updateUser(values);
+  const data = await res.json();
+
+  if (res.ok) {
+    mutate("/api/user", data);
+    handleSuccess("Update Successful");
+  } else {
+    handleError(data);
+  }
+
+  setSubmitting(false);
 };

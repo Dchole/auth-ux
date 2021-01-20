@@ -1,15 +1,19 @@
 import { getAccessToken } from "@/lib/access-token";
+import { TValues } from "@/lib/formik-options/profile-options";
 import renewToken from "@/utils/renew-token";
 
-const fetcher = async (url: string) => {
+const updateUser = async (values: TValues) => {
   await renewToken();
   const token = getAccessToken();
 
-  return await fetch(url, {
+  return await fetch("/api/update-user", {
+    method: "PUT",
     headers: {
       "Content-Type": "application/json",
       authorization: `Bearer ${token}`
-    }
-  }).then(res => res.json());
+    },
+    body: JSON.stringify(values)
+  });
 };
-export default fetcher;
+
+export default updateUser;

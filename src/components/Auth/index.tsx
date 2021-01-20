@@ -16,9 +16,7 @@ import {
   validateEmail,
   validationSchema
 } from "@/lib/formik-options/auth-options";
-import fetcher from "requests/fetcher";
-// import { initialValues as loginValues, TValues as TLoginValues } from "@/lib/formik-options/login-options";
-// import { initialValues as registerValues, TValues as TLoginValues } from "@/lib/formik-options/register-options";
+import getUser from "@/requests/get-user";
 
 interface IFormProps {
   form: "Login" | "Register";
@@ -30,7 +28,7 @@ const AuthForm: React.FC<IFormProps> = ({ children, form, handleSubmit }) => {
   const [email, setEmail] = useState("");
   const { data, mutate, isValidating } = useSWR(
     `/api/user-exists?email=${email}`,
-    fetcher
+    getUser
   );
 
   const handleToggleVisibility = () => setShowPassword(!showPassword);
