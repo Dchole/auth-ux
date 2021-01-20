@@ -41,8 +41,12 @@ const Header = () => {
             classes={{ container: classes.gridContainer }}
             container
           >
-            <Avatar variant="rounded" src={user.photo} alt={user.name} />
-            <Typography component="span">{user.name}</Typography>
+            <Avatar
+              variant="rounded"
+              src={user?.photo}
+              alt={user?.name || "profile"}
+            />
+            <Typography component="span">{user?.name}</Typography>
             <IconButton
               aria-controls="menu"
               aria-haspopup="true"

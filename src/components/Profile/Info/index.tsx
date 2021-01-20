@@ -81,7 +81,7 @@ const ProfileInfo = () => {
                         <Avatar
                           variant="rounded"
                           src={user.photo}
-                          alt={user.name}
+                          alt={user.name || "profile"}
                           className={classes.avatar}
                         />
                       ) : (
