@@ -1,4 +1,5 @@
 /* Options for both login and Register */
+import matchRegex from "@/utils/match-message";
 import * as Yup from "yup";
 
 export const initialValues = {
@@ -29,6 +30,18 @@ export const validateEmail = async (
 
 export const validationSchema = Yup.object().shape({
   email: Yup.string().email().required().label("Email"),
-  password: Yup.string().min(8).required().label("Password"),
+  password: Yup.string()
+    .min(8)
+    .matches(/[a-z]/, {
+      message: matchRegex("Password", "lowercase")
+    })
+    .matches(/[A-Z]/, {
+      message: matchRegex("Password", "uppercase")
+    })
+    .matches(/[0-9]/, {
+      message: matchRegex("Password", "numeric")
+    })
+    .required()
+    .label("Password"),
   remember: Yup.boolean()
 });

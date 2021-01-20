@@ -8,5 +8,3 @@ export const registerSchema = Joi.object().keys({
 export const loginSchema = registerSchema.keys({
   remember: Joi.boolean()
 });
-
-export default registerSchema;

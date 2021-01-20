@@ -1,6 +1,6 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import nextConnect from "next-connect";
-import { loginSchema, registerSchema } from "@/lib/validation";
+import { loginSchema, registerSchema } from "@/lib/validation/auth";
 
 export interface IError {
   message: string;
