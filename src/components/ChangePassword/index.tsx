@@ -1,18 +1,20 @@
+import { useState } from "react";
+import dynamic from "next/dynamic";
 import Dialog from "@material-ui/core/Dialog";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import DialogContent from "@material-ui/core/DialogContent";
 import DialogActions from "@material-ui/core/DialogActions";
 import Button from "@material-ui/core/Button";
-import { Field, Form, Formik, FormikHelpers } from "formik";
+import { Field, Form, Formik } from "formik";
 import { TextField } from "formik-material-ui";
 import useChangePasswordStyles from "./useChangePasswordStyles";
-import changePassword from "@/requests/change-password";
 import {
   handleSubmit,
   initialValues,
-  TValues,
   validationSchema
 } from "@/lib/formik-options/password-options";
+
+const Toast = dynamic(() => import("@/components/Toast"));
 
 interface IChangePasswordProps {
   open: boolean;
@@ -24,6 +26,10 @@ const ChangePassword: React.FC<IChangePasswordProps> = ({
   handleClose
 }) => {
   const classes = useChangePasswordStyles();
+  const [error, setError] = useState("");
+
+  const handleError = (error: string) => setError(error);
+  const clearError = () => setError("");
 
   return (
     <Dialog
@@ -36,7 +42,7 @@ const ChangePassword: React.FC<IChangePasswordProps> = ({
       <Formik
         initialValues={initialValues}
         validationSchema={validationSchema}
-        onSubmit={handleSubmit(handleClose)}
+        onSubmit={handleSubmit(handleClose, handleError)}
       >
         {({ isSubmitting }) => (
           <Form>
@@ -82,6 +88,12 @@ const ChangePassword: React.FC<IChangePasswordProps> = ({
           </Form>
         )}
       </Formik>
+      <Toast
+        open={Boolean(error)}
+        message={error}
+        severity="error"
+        handleClose={clearError}
+      />
     </Dialog>
   );
 };

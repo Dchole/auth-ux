@@ -1,3 +1,4 @@
+import { useRouter } from "next/router";
 import Typography from "@material-ui/core/Typography";
 import InputAdornment from "@material-ui/core/InputAdornment";
 import IconButton from "@material-ui/core/IconButton";
@@ -17,13 +18,14 @@ import { validationSchema } from "@/lib/formik-options/auth-options";
 import useShowPassword from "@/hooks/useShowPassword";
 
 const RegisterForm = () => {
+  const { replace } = useRouter();
   const [showPassword, handleToggle] = useShowPassword();
 
   return (
     <Formik
       initialValues={initialValues}
       validationSchema={validationSchema}
-      onSubmit={handleSubmit}
+      onSubmit={handleSubmit(replace)}
     >
       {({ isSubmitting, errors, touched }) => (
         <Form aria-labelledby="heading">

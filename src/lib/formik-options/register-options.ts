@@ -7,18 +7,26 @@ export const initialValues = {
 
 export type TValues = typeof initialValues;
 
-export const handleSubmit = async (
+export const handleSubmit = (redirect: (path: string) => void) => async (
   values: TValues,
-  { setSubmitting }: FormikHelpers<TValues>
+  { setFieldError, setSubmitting }: FormikHelpers<TValues>
 ) => {
   try {
-    await fetch("/api/register", {
+    const res = await fetch("/api/register", {
       method: "POST",
       headers: {
         "Content-Type": "application/json"
       },
       body: JSON.stringify(values)
     });
+
+    const data = await res.json();
+
+    if (!res.ok) {
+      return setFieldError(data.key, data.message);
+    }
+
+    redirect("/login");
   } catch (error) {
     console.log(error);
   } finally {

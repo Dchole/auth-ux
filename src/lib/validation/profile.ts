@@ -3,7 +3,7 @@ import Joi from "joi";
 export const accountSchema = Joi.object({
   photo: Joi.string().label("Photo"),
   name: Joi.string().min(3).label("Name"),
-  bio: Joi.string().min(80).label("Bio"),
+  bio: Joi.string().min(3).label("Bio"),
   phone: Joi.string().min(10).label("Phone Number"),
   email: Joi.string().email().required().label("Email")
 });

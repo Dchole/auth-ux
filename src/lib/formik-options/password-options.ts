@@ -39,17 +39,24 @@ export const validationSchema = Yup.object({
     .label("New Password")
 });
 
-export const handleSubmit = (handleClose: () => void) => async (
+export const handleSubmit = (
+  handleClose: () => void,
+  handleError: (error: string) => void
+) => async (
   values: TValues,
   { setSubmitting, setFieldError }: FormikHelpers<TValues>
 ) => {
-  const res = await changePassword(values);
-  const data = await res.json();
+  try {
+    const res = await changePassword(values);
+    const data = await res.json();
 
-  if (!res.ok) {
-    return setFieldError(data.key, data.message);
+    if (!res.ok) {
+      return setFieldError(data.key, data.message);
+    }
+
+    setSubmitting(false);
+    handleClose();
+  } catch (error) {
+    handleError(error.message);
   }
-
-  setSubmitting(false);
-  handleClose();
 };

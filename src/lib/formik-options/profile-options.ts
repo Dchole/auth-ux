@@ -16,7 +16,7 @@ export type TValues = typeof initialValues;
 export const validationSchema = Yup.object({
   photo: Yup.string().label("Photo"),
   name: Yup.string().min(3).label("Name"),
-  bio: Yup.string().min(80).label("Bio"),
+  bio: Yup.string().min(3).label("Bio"),
   phone: Yup.string().min(10).label("Phone Number"),
   email: Yup.string().email().required().label("Email")
 });
@@ -24,7 +24,10 @@ export const validationSchema = Yup.object({
 export const handleSubmit = (
   handleError: (error: string) => void,
   handleSuccess: (message: string) => void
-) => async (values: TValues, { setSubmitting }: FormikHelpers<TValues>) => {
+) => async (
+  values: TValues,
+  { setFieldError, setSubmitting }: FormikHelpers<TValues>
+) => {
   const res = await updateUser(values);
   const data = await res.json();
 
@@ -32,7 +35,9 @@ export const handleSubmit = (
     mutate("/api/user", data);
     handleSuccess("Update Successful");
   } else {
-    handleError(data);
+    typeof data === "string"
+      ? handleError(data)
+      : setFieldError(data.key, data.message);
   }
 
   setSubmitting(false);
