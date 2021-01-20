@@ -10,14 +10,16 @@ import Typography from "@material-ui/core/Typography";
 import IconButton from "@material-ui/core/IconButton";
 import ArrowDropDownIcon from "@material-ui/icons/ArrowDropDown";
 import useHeaderStyles from "./useHeaderStyles";
+import useUser from "@/hooks/useUser";
 
 const Menu = dynamic(() => import("@/components/Menu"));
 
 const Header = () => {
   const classes = useHeaderStyles();
+  const [anchorEl, setAnchorEl] = useState<null | HTMLButtonElement>(null);
+  const { user } = useUser();
   const { breakpoints } = useTheme();
   const mobile = useMediaQuery(breakpoints.down("xs"));
-  const [anchorEl, setAnchorEl] = useState<null | HTMLButtonElement>(null);
 
   const handleOpen = (event: React.MouseEvent<HTMLButtonElement>) =>
     setAnchorEl(event.currentTarget);
@@ -39,8 +41,8 @@ const Header = () => {
             classes={{ container: classes.gridContainer }}
             container
           >
-            <Avatar variant="rounded" />
-            <Typography component="span">Xanthe Neal</Typography>
+            <Avatar variant="rounded" src={user.photo} alt={user.name} />
+            <Typography component="span">{user.name}</Typography>
             <IconButton
               aria-controls="menu"
               aria-haspopup="true"

@@ -78,7 +78,7 @@ const EditProfile: React.FC<IEditProfileProps> = ({ user }) => {
       </div>
       <div className={classes.avatar}>
         <div>
-          <Avatar variant="rounded" />
+          <Avatar variant="rounded" src={user.photo} alt={user.name} />
           <IconButton
             id="upload-profile-button"
             aria-labelledby="change-photo-label"

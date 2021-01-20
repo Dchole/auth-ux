@@ -78,7 +78,12 @@ const ProfileInfo = () => {
                       }
                     >
                       {!index ? (
-                        <Avatar variant="rounded" className={classes.avatar} />
+                        <Avatar
+                          variant="rounded"
+                          src={user.photo}
+                          alt={user.name}
+                          className={classes.avatar}
+                        />
                       ) : (
                         value || "Empty"
                       )}
