@@ -10,34 +10,40 @@ const handler = nextConnect();
 handler.use(database);
 handler.use(validation);
 
-handler.post(async (req: IReq, res: NextApiResponse<IError | string>) => {
-  try {
-    const user = await req.db
-      .collection("users")
-      .findOne({ email: req.body.email });
+interface IData {
+  message: string;
+}
 
-    if (user)
-      return res
-        .status(400)
-        .json({ message: "Email already taken", key: "email" });
+handler.post(
+  async (req: IReq, res: NextApiResponse<IData | IError | string>) => {
+    try {
+      const user = await req.db
+        .collection("users")
+        .findOne({ email: req.body.email });
 
-    const salt = await genSalt(10);
-    const hashedPassword = await hash(req.body.password, salt);
+      if (user)
+        return res
+          .status(400)
+          .json({ message: "Email already taken", key: "email" });
 
-    await req.db.collection("users").insertOne({
-      _id: new ObjectID(),
-      email: req.body.email,
-      password: hashedPassword,
-      name: "",
-      bio: "",
-      phone: "",
-      photo: ""
-    });
+      const salt = await genSalt(10);
+      const hashedPassword = await hash(req.body.password, salt);
 
-    res.send("Registration successful");
-  } catch (error) {
-    res.status(500).end("Something went wrong");
+      await req.db.collection("users").insertOne({
+        _id: new ObjectID(),
+        email: req.body.email,
+        password: hashedPassword,
+        name: "",
+        bio: "",
+        phone: "",
+        photo: ""
+      });
+
+      res.json({ message: "Registration successful" });
+    } catch (error) {
+      res.status(500).end("Something went wrong");
+    }
   }
-});
+);
 
 export default handler;

@@ -7,7 +7,9 @@ export const initialValues = {
 
 export type TValues = typeof initialValues;
 
-export const handleSubmit = (redirect: (path: string) => void) => async (
+export const handleSubmit = (
+  redirect: (path: string) => Promise<boolean>
+) => async (
   values: TValues,
   { setFieldError, setSubmitting }: FormikHelpers<TValues>
 ) => {
@@ -23,8 +25,11 @@ export const handleSubmit = (redirect: (path: string) => void) => async (
     const data = await res.json();
 
     if (!res.ok) {
+      console.log("not ok");
       return setFieldError(data.key, data.message);
     }
+
+    console.log("OK");
 
     redirect("/login");
   } catch (error) {
