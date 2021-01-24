@@ -9,9 +9,9 @@ const useLoginWithProvider = (redirect: (path: string) => void) => {
   const [error, setError] = useState("");
   const [signInAttempt, setSignInAttempt] = useState(false);
 
-  const handleResult = async ({ user }: firebase.auth.UserCredential) => {
-    console.log(user);
+  const clearError = () => setError("");
 
+  const handleResult = async ({ user }: firebase.auth.UserCredential) => {
     const res = await fetch("/api/sign-with-providers", {
       method: "POST",
       headers: {
@@ -50,7 +50,7 @@ const useLoginWithProvider = (redirect: (path: string) => void) => {
     }
   }, []);
 
-  return { error, login };
+  return { error, login, clearError };
 };
 
 export default useLoginWithProvider;

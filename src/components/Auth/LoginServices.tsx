@@ -1,4 +1,5 @@
 import { useRouter } from "next/router";
+import dynamic from "next/dynamic";
 import IconButton from "@material-ui/core/IconButton";
 import FacebookIcon from "@material-ui/icons/Facebook";
 import TwitterIcon from "@material-ui/icons/Twitter";
@@ -6,6 +7,8 @@ import GitHubIcon from "@material-ui/icons/GitHub";
 import GoogleIcon from "../GoogleIcon";
 import useAuthStyles from "./useAuthStyles";
 import useLoginWithProvider from "@/hooks/useLoginWithProvider";
+
+const Toast = dynamic(() => import("../Toast"));
 
 const services = [
   { name: "google", icon: <GoogleIcon /> },
@@ -17,7 +20,8 @@ const services = [
 const LoginServices = () => {
   const classes = useAuthStyles();
   const { replace } = useRouter();
-  const { login } = useLoginWithProvider(replace);
+
+  const { error, clearError, login } = useLoginWithProvider(replace);
 
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     const { provider } = event.currentTarget.dataset;
@@ -39,6 +43,13 @@ const LoginServices = () => {
           </li>
         ))}
       </ul>
+      <Toast
+        open={Boolean(error)}
+        message={error}
+        severity="error"
+        handleClose={clearError}
+        autoHide={false}
+      />
     </>
   );
 };
