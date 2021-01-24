@@ -6,6 +6,8 @@ const TOKEN_NAME = "token";
 export const MAX_AGE = 60 * 60 * 24 * 7; // 1 week
 
 export function setTokenCookie(res: NextApiResponse, token: string) {
+  console.log({ token });
+
   const cookie = serialize(TOKEN_NAME, token, {
     maxAge: MAX_AGE,
     expires: new Date(Date.now() + MAX_AGE * 1000),
