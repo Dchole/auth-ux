@@ -5,7 +5,7 @@ interface IToastProps {
   open: boolean;
   message: string;
   severity: Color;
-  autoHide: boolean;
+  autoHide?: boolean;
   handleClose: () => void;
 }
 
