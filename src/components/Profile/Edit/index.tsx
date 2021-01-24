@@ -20,7 +20,6 @@ import {
 } from "@/lib/formik-options/profile-options";
 import rearrangeUserKeys from "@/utils/rearrange-user-keys";
 import useEditStyles from "./useEditStyles";
-import uploadImage from "@/utils/upload-image";
 
 const ChangePassword = dynamic(() => import("@/components/ChangePassword"));
 const Toast = dynamic(() => import("@/components/Toast"));
@@ -44,6 +43,8 @@ const EditProfile: React.FC<IEditProfileProps> = ({ user }) => {
   const [open, setOpen] = useState(false);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
+  const [image, setImage] = useState<string | null>(null);
+  const [imageFile, setImageFile] = useState<File | null>(null);
 
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
@@ -51,11 +52,19 @@ const EditProfile: React.FC<IEditProfileProps> = ({ user }) => {
   const handleError = (error: string) => setError(error);
   const clearError = () => setError("");
 
-  const handleSuccess = (message: string) => setSuccess(message);
+  const handleSuccess = (message: string) => {
+    setSuccess(message);
+    setImageFile(null); // Clear image file after upload to prevent file re-upload
+  };
   const clearSuccess = () => setSuccess("");
 
   const handleUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
-    uploadImage(user._id, event);
+    const file = event.target.files[0];
+    setImageFile(file);
+
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onloadend = () => setImage(reader.result as string);
   };
 
   const {
@@ -69,7 +78,7 @@ const EditProfile: React.FC<IEditProfileProps> = ({ user }) => {
   } = useFormik({
     initialValues: rearrangeUserKeys(user),
     validationSchema,
-    onSubmit: onSubmit(handleError, handleSuccess)
+    onSubmit: onSubmit(imageFile, handleError, handleSuccess)
   });
 
   return (
@@ -84,11 +93,7 @@ const EditProfile: React.FC<IEditProfileProps> = ({ user }) => {
       </div>
       <div className={classes.avatar}>
         <div>
-          <Avatar
-            variant="rounded"
-            src={user.photo}
-            alt={user.name || "profile"}
-          />
+          <Avatar variant="rounded" src={user.photo || image} alt={user.name} />
           <IconButton
             id="upload-profile-button"
             aria-labelledby="change-photo-label"

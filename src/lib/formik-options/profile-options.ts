@@ -2,6 +2,7 @@ import * as Yup from "yup";
 import { FormikHelpers } from "formik";
 import updateUser from "@/requests/update-user";
 import { mutate } from "swr";
+import uploadImage from "@/utils/upload-image";
 
 export const initialValues = {
   photo: "",
@@ -22,13 +23,20 @@ export const validationSchema = Yup.object({
 });
 
 export const handleSubmit = (
+  imageFile: File | null,
   handleError: (error: string) => void,
   handleSuccess: (message: string) => void
 ) => async (
   values: TValues,
   { setFieldError, setSubmitting }: FormikHelpers<TValues>
 ) => {
-  const res = await updateUser(values);
+  let photo: string;
+
+  if (imageFile) {
+    photo = await uploadImage(imageFile);
+  }
+
+  const res = await updateUser({ ...values, photo });
   const data = await res.json();
 
   if (res.ok) {

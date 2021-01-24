@@ -1,32 +1,12 @@
-const uploadImage = async (
-  userID: string,
-  event: React.ChangeEvent<HTMLInputElement>
-) => {
-  const file = event.target.files[0];
+import firebase from "@/lib/firebase";
 
-  const formData = new FormData();
+const uploadImage = async (file: File) => {
+  const imageRef = firebase.storage().ref();
 
-  formData.append("file", file);
-  formData.append("userID", userID);
-
-  const res = await fetch("/api/upload", {
-    method: "POST",
-
-    body: formData
-  });
-
-  const upload = await res.json();
-
-  if (res.ok) {
-    console.log(upload);
-    const photo = await fetch(`/api/get-profile-photo?id=${userID}`).then(res =>
-      res.json()
-    );
-
-    console.log(photo);
-  } else {
-    console.error("Upload failed");
-  }
+  return imageRef
+    .child(`images/${file.name}`)
+    .put(file)
+    .then(({ ref }) => ref.getDownloadURL());
 };
 
 export default uploadImage;
