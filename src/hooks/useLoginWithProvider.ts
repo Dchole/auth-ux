@@ -1,40 +1,53 @@
 import { useContext, useEffect, useState } from "react";
-import { DeviceContext } from "@/components/DeviceContext";
 import providers from "@/lib/providers";
 import firebase from "@/lib/firebase";
 import { setAccessToken } from "@/lib/access-token";
+import { DeviceContext } from "@/components/DeviceContext";
 
-const useLoginWithProvider = () => {
-  const mobile = useContext(DeviceContext);
+const useLoginWithProvider = (redirect: (path: string) => void) => {
+  const device = useContext(DeviceContext);
   const [error, setError] = useState("");
+  const [signInAttempt, setSignInAttempt] = useState(false);
+
+  const handleResult = async ({ user }: firebase.auth.UserCredential) => {
+    console.log(user);
+
+    const res = await fetch("/api/sign-with-providers", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(user)
+    });
+
+    const data = await res.json();
+    !res.ok && setError(data);
+
+    setAccessToken(data.accessToken);
+    redirect("/profile");
+  };
 
   const login = async (provider: string) => {
-    if (mobile) {
+    if (device === "mobile") {
       firebase.auth().signInWithRedirect(providers[provider]);
+      setSignInAttempt(true);
     } else {
       firebase
         .auth()
         .signInWithPopup(providers[provider])
-        .then(({ credential }) => {
-          console.log(credential);
-          // @ts-ignore
-          setAccessToken(credential.accessToken);
-        })
-        .catch(error => {
-          setError(error.message);
-        });
+        .then(handleResult)
+        .catch(error => setError(error.message));
     }
   };
 
   useEffect(() => {
-    firebase
-      .auth()
-      .getRedirectResult()
-      .then(({ credential }) => {
-        console.log(credential);
-        // @ts-ignore
-        setAccessToken(credential?.accessToken);
-      });
+    if (signInAttempt) {
+      firebase
+        .auth()
+        .getRedirectResult()
+        .then(handleResult)
+        .catch(error => setError(error.message));
+    }
   }, []);
 
   return { error, login };

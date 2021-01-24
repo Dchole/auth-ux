@@ -23,6 +23,7 @@ handler.get(async (req: IReq, res: NextApiResponse) => {
 
     res.json(user);
   } catch (error) {
+    console.log(error);
     res.status(500).end("Something went wrong");
   }
 });

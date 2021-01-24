@@ -1,3 +1,4 @@
+import { useRouter } from "next/router";
 import IconButton from "@material-ui/core/IconButton";
 import FacebookIcon from "@material-ui/icons/Facebook";
 import TwitterIcon from "@material-ui/icons/Twitter";
@@ -15,7 +16,8 @@ const services = [
 
 const LoginServices = () => {
   const classes = useAuthStyles();
-  const { login } = useLoginWithProvider();
+  const { replace } = useRouter();
+  const { login } = useLoginWithProvider(replace);
 
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     const { provider } = event.currentTarget.dataset;
