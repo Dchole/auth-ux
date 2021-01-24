@@ -1,16 +1,16 @@
 import { useContext, useEffect, useState } from "react";
 import { DeviceContext } from "@/components/DeviceContext";
-import providers, { TProvider } from "@/lib/providers";
+import providers from "@/lib/providers";
 import firebase from "@/lib/firebase";
 import { setAccessToken } from "@/lib/access-token";
 
-const useLoginWithProvider = (provider: TProvider) => {
+const useLoginWithProvider = () => {
   const mobile = useContext(DeviceContext);
   const [error, setError] = useState("");
 
-  const login = async () => {
+  const login = async (provider: string) => {
     if (mobile) {
-      firebase.auth().signInWithPopup(providers[provider]);
+      firebase.auth().signInWithRedirect(providers[provider]);
     } else {
       firebase
         .auth()
@@ -33,7 +33,7 @@ const useLoginWithProvider = (provider: TProvider) => {
       .then(({ credential }) => {
         console.log(credential);
         // @ts-ignore
-        setAccessToken(credential.accessToken);
+        setAccessToken(credential?.accessToken);
       });
   }, []);
 

@@ -8,6 +8,8 @@ import SettingsIcon from "@material-ui/icons/Settings";
 import ExitToAppIcon from "@material-ui/icons/ExitToApp";
 import Link from "../Link";
 import useMenuStyles from "./useMenuStyles";
+import logout from "@/utils/logout";
+import { useRouter } from "next/router";
 
 interface IOptionsProps {
   anchorEl: any;
@@ -16,8 +18,10 @@ interface IOptionsProps {
 
 const Options: React.FC<IOptionsProps> = ({ anchorEl, handleClose }) => {
   const classes = useMenuStyles();
+  const { replace } = useRouter();
 
-  const logout = () => {
+  const handleLogout = () => {
+    logout(replace);
     handleClose();
   };
 
@@ -52,7 +56,7 @@ const Options: React.FC<IOptionsProps> = ({ anchorEl, handleClose }) => {
         </Link>
       </MenuItem>
       <Divider component="li" className={classes.divider} />
-      <MenuItem onClick={logout}>
+      <MenuItem onClick={handleLogout}>
         <ListItemIcon>
           <ExitToAppIcon color="secondary" />
         </ListItemIcon>

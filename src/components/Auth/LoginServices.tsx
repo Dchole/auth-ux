@@ -1,11 +1,10 @@
-import { useContext } from "react";
 import IconButton from "@material-ui/core/IconButton";
 import FacebookIcon from "@material-ui/icons/Facebook";
 import TwitterIcon from "@material-ui/icons/Twitter";
 import GitHubIcon from "@material-ui/icons/GitHub";
 import GoogleIcon from "../GoogleIcon";
 import useAuthStyles from "./useAuthStyles";
-import { DeviceContext } from "../DeviceContext";
+import useLoginWithProvider from "@/hooks/useLoginWithProvider";
 
 const services = [
   { name: "google", icon: <GoogleIcon /> },
@@ -16,14 +15,25 @@ const services = [
 
 const LoginServices = () => {
   const classes = useAuthStyles();
-  const mobile = useContext(DeviceContext);
+  const { login } = useLoginWithProvider();
+
+  const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+    const { provider } = event.currentTarget.dataset;
+    login(provider);
+  };
 
   return (
     <>
       <ul className={classes.services}>
         {services.map(service => (
           <li key={service.name}>
-            <IconButton aria-label={service.name}>{service.icon}</IconButton>
+            <IconButton
+              data-provider={service.name}
+              aria-label={service.name}
+              onClick={handleClick}
+            >
+              {service.icon}
+            </IconButton>
           </li>
         ))}
       </ul>
