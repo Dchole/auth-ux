@@ -20,7 +20,7 @@ handler.put(async (req: IReq, res: NextApiResponse) => {
       .findOneAndUpdate(
         { _id: new ObjectID(userID) },
         { $set: req.body },
-        { returnOriginal: false, projection: { password: 0, _id: 0 } }
+        { returnOriginal: false, projection: { password: 0 } }
       );
 
     if (!user) return res.status(400).end("Update Failed");

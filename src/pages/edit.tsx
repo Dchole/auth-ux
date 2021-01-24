@@ -28,7 +28,7 @@ const Edit = () => {
             Back
           </Button>
         </div>
-        {!fetchingUser && <EditProfile user={rearrangeUserKeys(user)} />}
+        {!fetchingUser && <EditProfile user={user} />}
       </Layout>
       <style jsx>{`
         #back-button {

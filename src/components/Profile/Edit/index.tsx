@@ -1,6 +1,6 @@
 import dynamic from "next/dynamic";
-import { useRef, useState } from "react";
 import clsx from "clsx";
+import { useRef, useState } from "react";
 import { capitalize } from "@material-ui/core";
 import Paper from "@material-ui/core/Paper";
 import Typography from "@material-ui/core/Typography";
@@ -20,11 +20,13 @@ import {
 } from "@/lib/formik-options/profile-options";
 import rearrangeUserKeys from "@/utils/rearrange-user-keys";
 import useEditStyles from "./useEditStyles";
+import uploadImage from "@/utils/upload-image";
 
 const ChangePassword = dynamic(() => import("@/components/ChangePassword"));
 const Toast = dynamic(() => import("@/components/Toast"));
 
 interface IUser {
+  _id: string;
   photo: string;
   name: string;
   bio: string;
@@ -49,8 +51,12 @@ const EditProfile: React.FC<IEditProfileProps> = ({ user }) => {
   const handleError = (error: string) => setError(error);
   const clearError = () => setError("");
 
-  const handleSuccess = (message: string) => setSuccess(success);
+  const handleSuccess = (message: string) => setSuccess(message);
   const clearSuccess = () => setSuccess("");
+
+  const handleUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
+    uploadImage(user._id, event);
+  };
 
   const {
     handleBlur,
@@ -96,6 +102,7 @@ const EditProfile: React.FC<IEditProfileProps> = ({ user }) => {
             accept="image/*"
             name="photo"
             type="file"
+            onChange={handleUpload}
             aria-labelledby="change-photo-label"
           />
         </div>

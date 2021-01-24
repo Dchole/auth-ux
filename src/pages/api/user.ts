@@ -17,10 +17,7 @@ handler.get(async (req: IReq, res: NextApiResponse) => {
 
     const user = await req.db
       .collection("users")
-      .findOne(
-        { _id: new ObjectID(userID) },
-        { projection: { password: 0, _id: 0 } }
-      );
+      .findOne({ _id: new ObjectID(userID) }, { projection: { password: 0 } });
 
     if (!user) return res.status(400).end("User not found");
 
