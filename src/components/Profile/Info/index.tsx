@@ -21,7 +21,7 @@ const ProfileInfo = () => {
   const classes = useInfoStyles();
   const theme = useTheme();
   const mobile = useMediaQuery(theme.breakpoints.down("xs"));
-  const { user, fetchingUser } = useUser();
+  const { user } = useUser();
 
   return (
     <Paper component="section" variant="outlined" className={classes.root}>
@@ -45,7 +45,7 @@ const ProfileInfo = () => {
           Edit
         </Button>
       </Toolbar>
-      {fetchingUser ? (
+      {!user ? (
         <Box
           width="100%"
           height={300}

@@ -6,10 +6,9 @@ import Header from "@/components/Header";
 import Layout from "@/components/Layout";
 import EditProfile from "@/components/Profile/Edit";
 import useUser from "@/hooks/useUser";
-import rearrangeUserKeys from "@/utils/rearrange-user-keys";
 
 const Edit = () => {
-  const { user, fetchingUser } = useUser();
+  const { user } = useUser();
   const { back } = useRouter();
 
   return (
@@ -28,7 +27,7 @@ const Edit = () => {
             Back
           </Button>
         </div>
-        {!fetchingUser && <EditProfile user={user} />}
+        {user && <EditProfile user={user} />}
       </Layout>
       <style jsx>{`
         #back-button {

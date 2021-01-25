@@ -1,10 +1,9 @@
-const rearrangeUserKeys = (user: Record<string, any>) => {
-  if (user) {
-    const { photo, name, bio, phone, email } = user;
+const rearrangeUserKeys = ({
+  photo,
+  name,
+  bio,
+  phone,
+  email
+}: Record<string, any>) => ({ photo, name, bio, phone, email });
 
-    return { photo, name, bio, phone, email };
-  }
-
-  return {};
-};
 export default rearrangeUserKeys;
